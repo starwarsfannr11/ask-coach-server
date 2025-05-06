@@ -55,8 +55,11 @@ app.post("/api/ask-coach", async (req, res) => {
 
   } catch (error) {
     console.error("❌ OpenAI error:", error);
-    res.status(500).json({ error: "Failed to generate response" });
-  }
+    if (error.response) {
+      console.error("📥 Error response:", error.response.status, error.response.data);
+    }
+    res.status(500).json({ error: error.message || "Failed to generate response" });
+  }  
 });
 
 module.exports = app;
